@@ -78,7 +78,7 @@
         </div>
     </div>
     <div class="container center-align">
-        <form action="" onsubmit="showLoading()" method="post">
+        <form action="{{route('index')}}" onsubmit="showLoading()" method="get">
             <button class="btn-flat waves-effect">
                 <i class="material-icons left">Inicio</i> 
             </button>
