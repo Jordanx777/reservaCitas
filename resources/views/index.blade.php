@@ -8,8 +8,9 @@
 </head>
 <body >
     <h3>hola</h3>
-    <a href="{{ route('usuarios') }}">formulario</a>
-<form action="{{ route('usuarios') }}" method="GET">
+    <a href="{{ route('landing') }}">landing</a>
+    <a href="{{ route('login_html') }}">Login</a>
+<form action="{{ route('usuarios.formulario') }}" method="POST">
     @csrf
     <input type="submit" value="formulario">
 </form>
