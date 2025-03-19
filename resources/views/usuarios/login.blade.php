@@ -34,12 +34,13 @@
             <a class="link-recuperar" href="">¿Olvidaste tu contraseña?</a>
         </div>
     </div>
-    <form id="myForm" action="{{route('usuarios.formulario')}}" onsubmit="showLoading()" method="get">
-        <button class="btn btn-outline-secondary" value="inicio">
+    <form id="myForm" action="{{route('usuarios.formulario')}}" onsubmit="showLoading()" method="post">
+        @csrf
+        <button class="btn btn-outline-secondary" value="agg usuarios">
             <i class="fa-solid fa-user-plus"></i> Agregar usuarios
         </button>
     </form>
-    <form id="myForm" action="" onsubmit="showLoading()" method="get">
+    <form id="myForm" action="{{route('index')}}" onsubmit="showLoading()" method="get">
         <button class="btn btn-outline-secondary" value="inicio">
             <i class="fa-solid fa-house"></i> Inicio
         </button>
