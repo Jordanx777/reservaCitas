@@ -6,7 +6,7 @@ use App\Http\Controllers\UsuariosController;
 // esta ruta es la que se ejecuta al iniciar el proyecto
 Route::get('/', [UsuariosController::class,'Index'])->name('index');
 // esta ruta es para el formulario de registro
-Route::get('/usuarios', [UsuariosController::class,'Formulario'])->name('usuarios.formulario');
+Route::post('/usuarios', [UsuariosController::class,'Formulario'])->name('usuarios.formulario');
 //esta es para registrar los datos del formulario
 Route::post('/usuarios/Registrar', [UsuariosController::class,'RegistrarU'])->name('usuarios.registrar');
 // esta es para la vista de la landing la cual uso cuando inicia sesion
