@@ -15,6 +15,7 @@
         {{ session('mensaje') }}
     </div>
     @endif
+    <a href="#usuario">¿no tienes cuenta?</a>
     <div class="login-container">
         <div class="login-card">
             <h2 class="text-center">Inicia Sesión</h2>
@@ -36,7 +37,7 @@
     </div>
     <form id="myForm" action="{{route('usuarios.formulario')}}" onsubmit="showLoading()" method="post">
         @csrf
-        <button class="btn btn-outline-secondary" value="agg usuarios">
+        <button id="usuario" class="btn btn-outline-secondary" value="agg usuarios">
             <i class="fa-solid fa-user-plus"></i> Agregar usuarios
         </button>
     </form>
