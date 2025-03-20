@@ -21,6 +21,13 @@ class UsuariosController extends Controller
     public function Login_html(){
         return view('usuarios/login');
     }
+    public function Mostrar_usuarios(){
+        //consulta a la base de datos para obtener todos los usuarios
+        $usuarios = DB::table('Usuarios')->get();
+
+        //retorna la vista mostrar con los usuarios
+        return view('usuarios.usuarios', ['usuarios' => $usuarios]);
+    }
     public function RegistrarU(Request $request)
     {
 
@@ -59,10 +66,38 @@ class UsuariosController extends Controller
 
         //si la consulta es correcta redirecciona al formulario con un mensaje
         if ($consulta) {
-            return redirect()->route('usuarios.formulario')->with('mensaje', 'Usuario registrado correctamente');
+            return redirect()->route('Usuarios.mostrar')->with('mensaje', 'Usuario registrado correctamente');
         } else {
             //si la consulta es incorrecta redirecciona al formulario con un mensaje
             return redirect()->route('usuarios.formulario')->with('error', 'algo a fallado correctamente');
+        }
+
+    }
+    public function Eliminar($id){
+        // if ($usuario) {
+        //     $consulta = DB::table('Usuarios')->where('id', $id)->delete();
+        //     $nombre_usuario = $usuario->nombre;
+    
+        //     if ($consulta) {
+        //         return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> "El Usuario $nombre_usuario de id $id ha sido eliminado correctamente"], ['color' => 'green']);
+        //     } else {
+        //         return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'El Usuario no se pudo eliminar'], ['color' => 'red']);
+        //     }
+        // } else {
+        //     return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'El Usuario no existe'], ['color' => 'red']);
+        // }
+    $usuario = DB::table('Usuarios')->where('id', $id)->first();
+    $consulta = DB::table('Usuarios')->where('id', $id)->delete();
+
+    $nombre_usuario = $usuario->nombre;
+
+
+        if ($consulta) {
+            return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> "El Usuario $nombre_usuario de id $id ha sido eliminado correctamente"],['color' => 'green']);
+            // return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> "El registro con ID $id fue eliminado correctamente."]);
+        }
+        else{
+            return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'El Usuario no se pudo eliminar'], ['color' => 'red']);
         }
 
     }
