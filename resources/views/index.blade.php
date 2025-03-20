@@ -21,7 +21,10 @@
     <h1>Bienvenido a Laravel</h1>
 
     <h3>hola {{session('nombre')}}</h3>
-    <a class="btn btn-success btn-sm mx-5" href="{{ route('landing') }}">landing</a> 
+    <form action="{{ route('landing') }}" method="get">
+    @csrf
+    <input type="submit" value="Landing">
+    </form> 
 
     <a class="btn btn-success btn-sm mx-5" href="{{ route('login_html') }}">Login</a>
 
