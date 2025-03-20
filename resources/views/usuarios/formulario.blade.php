@@ -32,7 +32,7 @@
                                 </ul>
                             </div>
                         @endif
-                    <form id="myForm" action="{{route('usuarios.registrar')}}" method="POST"  enctype="multipart/form-data">
+                    <form  action="{{route('usuarios.registrar')}}" method="post"  enctype="multipart/form-data">
                         @csrf
                         <div class="mb-2">
                             <label for="nombre" class="form-label">Nombre</label>
