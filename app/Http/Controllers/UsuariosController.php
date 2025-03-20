@@ -16,17 +16,29 @@ class UsuariosController extends Controller
         return view('usuarios.formulario');
     }
     public function Landing(){
-        return view('landing');
+        if (session()->has('nombre')) {
+            return view('landing');
+        }else {
+            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red']);
+        }
     }
     public function Login_html(){
+        
         return view('usuarios/login');
     }
     public function Mostrar_usuarios(){
+        if (session()->has('nombre')) {
+            
         //consulta a la base de datos para obtener todos los usuarios
-        $usuarios = DB::table('Usuarios')->get();
+            $usuarios = DB::table('Usuarios')->get();
 
         //retorna la vista mostrar con los usuarios
-        return view('usuarios.usuarios', ['usuarios' => $usuarios]);
+            return view('usuarios.usuarios', ['usuarios' => $usuarios]);
+        }else {
+            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red']);
+        }
+       
+       
     }
     public function RegistrarU(Request $request)
     {
@@ -73,20 +85,57 @@ class UsuariosController extends Controller
         }
 
     }
+    public function Modificar_html($id){
+        //consulta a la base de datos para obtener el usuario con el id
+        $usuario = DB::table('Usuarios')->where('id', $id)->first();
+        // dd("ID: ".$usuario->id, "Nombre: ".$usuario->nombre, "Apellidos: ".$usuario->apellidos, "Telefono: ".$usuario->telefono, "Edad: ".$usuario->edad, "Correo: ".$usuario->correo);
+        //retorna la vista modificar con el usuario
+        return view('usuarios.editar', ['usuario' => $usuario]);
+    }
+
+    public function Actualizacion(Request $request, $id){
+        // verifica que los campos no esten vacios y en el campo de correo sea tipo correo
+        $request->validate([
+            'nombre' => 'required',
+            'apellidos' => 'required',
+            'telefono' => 'required',
+            'edad' => 'required',
+            'correo' => 'required|email',
+            'contraseña' => 'nullable|min:6|confirmed',
+        ]);
+
+        //obtiene los valores de los campos
+        $nombre = $request->input('nombre');
+        $apellidos = $request->input('apellidos');
+        $telefono = $request->input('telefono');
+        $edad = $request->input('edad');
+        $correo = $request->input('correo');
+        $contraseña = $request->input('contraseña');
+
+        //actualiza los valores en la base de datos
+        $consulta = DB::table('Usuarios')->where('id', $id)->update([
+            'nombre' => $nombre,
+            'apellidos' => $apellidos,
+            'telefono' => $telefono,
+            'edad' => $edad,
+            'correo' => $correo,
+            'contraseña' => Hash::make($contraseña),
+            'updated_at' => now(),
+        ]);
+        // dump($consulta);
+
+        //si la consulta es correcta redirecciona al formulario con un mensaje
+        if ($consulta) {
+            return redirect()->route('Usuarios.mostrar')->with('mensaje', 'Usuario actualizado correctamente');
+        } else {
+            //si la consulta es incorrecta redirecciona al formulario con un mensaje
+            return redirect()->route('Usuarios.modificar_html', $id)->with('error', 'algo a fallado correctamente');
+        }
+    }
     public function Eliminar($id){
-        // if ($usuario) {
-        //     $consulta = DB::table('Usuarios')->where('id', $id)->delete();
-        //     $nombre_usuario = $usuario->nombre;
-    
-        //     if ($consulta) {
-        //         return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> "El Usuario $nombre_usuario de id $id ha sido eliminado correctamente"], ['color' => 'green']);
-        //     } else {
-        //         return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'El Usuario no se pudo eliminar'], ['color' => 'red']);
-        //     }
-        // } else {
-        //     return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'El Usuario no existe'], ['color' => 'red']);
-        // }
+        //consulta a la base de datos para obtener el usuario con el id
     $usuario = DB::table('Usuarios')->where('id', $id)->first();
+    // busca en la base de datos el usuario segun el id y lo elimina
     $consulta = DB::table('Usuarios')->where('id', $id)->delete();
 
     $nombre_usuario = $usuario->nombre;
