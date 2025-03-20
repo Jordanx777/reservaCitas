@@ -21,7 +21,7 @@
             @if (session('nombre'))
             <div>
                 <span class="me-3">Usuario: <strong>{{ session('nombre') }}</strong></span>
-                <form id="myForm" action="{{ route('cerrar') }}" method="POST">
+                <form id="myForm" action="{{ route('Cerrar') }}" method="get">
                     @csrf
                     <button class="btn btn-danger btn-sm" type="submit">
                         <i class="fa-solid fa-house"></i> Cerrar Sesión
@@ -84,11 +84,11 @@
                             <td>{{ $usuario->created_at }}</td>
                             <td>
                                 {{-- {{ route('Usuarios.editar', $usuario->id) }} --}}
-                                <a href="" class="btn btn-warning btn-sm">
+                                <a href="{{route('Usuarios.modificar_html', $usuario->id)}}" class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-pencil">M</i>
                                 </a>
                                 {{-- {{ route('Usuarios.eliminar', $usuario->id) }} --}}
-                                <form action="{{route('Usuarios.eliminar',$usuario->id)}}" method="POST" class="d-inline">
+                                <form action="{{route('Usuarios.eliminar',$usuario->id)}}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger btn-sm" type="submit">
