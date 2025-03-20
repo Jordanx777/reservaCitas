@@ -15,7 +15,6 @@
         {{ session('mensaje') }}
     </div>
     @endif
-    <a href="#usuario">¿no tienes cuenta?</a>
     <div class="login-container">
         <div class="login-card">
             <h2 class="text-center">Inicia Sesión</h2>
@@ -32,7 +31,10 @@
                     <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
                 </div>
             </form>
+            
+            <a class="link-recuperar" href="{{route('usuarios.formulario')}}">¿no tienes cuenta?</a>
             <a class="link-recuperar" href="">¿Olvidaste tu contraseña?</a>
+            
         </div>
     </div>
     <form id="myForm" action="{{route('usuarios.formulario')}}" onsubmit="showLoading()" method="post">
