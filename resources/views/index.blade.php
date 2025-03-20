@@ -29,5 +29,9 @@
     @csrf
     <input type="submit" value="formulario">
 </form>
+<form action="{{ route('Usuarios.mostrar') }}" method="get">
+    @csrf
+    <input type="submit" value="Usuarios">
+</form>
 </body>
 </html>
