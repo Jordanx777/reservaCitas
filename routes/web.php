@@ -9,6 +9,14 @@ Route::get('/', [UsuariosController::class,'Index'])->name('index');
 Route::post('/usuarios', [UsuariosController::class,'Formulario'])->name('usuarios.formulario');
 //esta es para registrar los datos del formulario
 Route::post('/usuarios/Registrar', [UsuariosController::class,'RegistrarU'])->name('usuarios.registrar');
+// esta es para mostrar los usuarios
+Route::get('/usuarios/Ver', [UsuariosController::class,'Mostrar_usuarios'])->name('Usuarios.mostrar');
+// esta espara ingresar al formulario para modificar los usuarios
+Route::post('/usuarios/modificarFormulario/{id}', [UsuariosController::class,'Modificar_html'])->name('Usuarios.modificar_html');
+// esta es para modificar los usuarios
+Route::post('/usuarios/actualizar/{id}', [UsuariosController::class,'Actualizacion'])->name('Usuarios.modificar');
+// esta es para eliminar
+Route::delete('/usuarios/Eliminar/{id}', [UsuariosController::class,'Eliminar'])->name('Usuarios.eliminar');
 // esta es para la vista de la landing la cual uso cuando inicia sesion
 Route::get('/landing', [UsuariosController::class,'Landing'])->name('landing');
 // esta es para la vista del login
