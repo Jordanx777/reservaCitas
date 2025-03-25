@@ -36,5 +36,9 @@
     @csrf
     <input type="submit" value="Usuarios">
 </form>
+<form action="{{ route('Principal') }}" method="post">
+    @csrf
+    <input type="submit" value="inicio">
+</form>
 </body>
 </html>
