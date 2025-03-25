@@ -1,25 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-<link rel="stylesheet" href="{{asset('css/login.css')}}">
-</head>
-<body>
-    @if(session('mensaje'))
-    <div style="color: {{session('color')}}; font-weight: bold;">
-        {{ session('mensaje') }}
-    </div>
-    @endif
+
+    @extends('layouts.menu')
+    @section('contenido')
+    @push('estilos')
+    <link rel="stylesheet" href="{{asset('css/login.css')}}">
+    @endpush
     <div class="login-container">
         <div class="login-card">
             <h2 class="text-center">Inicia Sesión</h2>
             {{-- <p class="text-center text-secondary">Conéctate con tus datos</p> --}}
-            <form action="{{route('login')}}" method="POST">
+            <form action="{{route('login')}}" method="post">
                 @csrf
                 <div class="mb-3">
                     <input type="text" name="correo" class="form-control" placeholder="Correo Electrónico" required>
@@ -48,5 +37,4 @@
             <i class="fa-solid fa-house"></i> Inicio
         </button>
     </form>
-</body>
-</html>
+    @endsection
