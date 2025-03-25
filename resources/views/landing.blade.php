@@ -7,11 +7,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-    @if(session('mensaje'))
-    <div style="color: green; font-weight: bold;">
-        {{ session('mensaje') }}
-    </div>
-@endif
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
@@ -29,22 +24,49 @@
                     <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
                     <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{route('login_html')}}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{route('Usuarios.mostrar')}}">Usuarios</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{route('index')}}">Inicio</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="#">Reservar Cita</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
+    @if(session('mensaje'))
+    <div style="color: green; font-weight: bold;">
+        {{ session('mensaje') }}
+    </div>
+@endif
     <!-- Hero Section -->
-    <header class="bg-primary text-white text-center py-5">
+    {{-- <header class="bg-primary text-white text-center py-5">
         <h1>en construccion...</h1>
         <p>...</p>
         <a href="#contacto" class="btn btn-light">Contáctanos</a>
-    </header>
+    </header> --}}
 
     <!-- Servicios -->
     <section id="servicios" class="container my-5">
         <h2 class="text-center">Nuestros Servicios</h2>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <h4>...</h4>
+                <p>Gran variedad de medicamentos de calidad.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>...</h4>
+                <p>Profesionales dispuestos a asesorarte.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>...</h4>
+                <p>Recibe tus productos sin salir de casa.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="container my-5">
+        {{-- <h2 class="text-center">Nuestros Servicios</h2> --}}
         <div class="row text-center">
             <div class="col-md-4">
                 <h4>...</h4>
