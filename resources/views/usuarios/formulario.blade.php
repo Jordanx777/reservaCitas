@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>formulario</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    @if(session('mensaje'))
-    <div style="color: green; font-weight: bold;">
-        {{ session('mensaje') }}
-    </div>
-@endif
-
+@extends('layouts.menu')
+@section('contenido')
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -53,7 +38,14 @@
                             <label for="telefono" class="form-label">Número Telefónico</label>
                             <input id="telefono" type="text" name="telefono" class="form-control" required>
                         </div>
-
+                        <div class="mb-2">
+                            <label for="rol" class="form-label">Rol</label>
+                            <select id="rol" name="rol" class="form-select" required>
+                                @foreach($roles as $valor )
+                                    <option value="{{ $valor->id }}">{{ $valor->descripcion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="mb-2">
                             <label for="correo" class="form-label">Correo Electrónico</label>
                             <input id="correo" type="email" name="correo" class="form-control" required>
@@ -85,5 +77,4 @@
         </form>
     </div>
 </div>
-</body>
-</html>
+@endsection
