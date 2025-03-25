@@ -1,20 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Usuarios</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    @if(session('mensaje'))
-    <div style="color: {{session('color')}}; font-weight: bold;">
-        {{ session('mensaje') }}
-    </div>
-    @endif
-
-
+@extends('layouts.menu')
+@section('titulo', 'Gestión de Usuarios')
+@section('estilos')
+@section('contenido')
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center">
             <h3 class="text-secondary">Gestión de Usuarios</h3>
@@ -68,7 +55,13 @@
                         <th>Edad</th>
                         <th>Correo</th>
                         <th>Fecha creacion</th>
+                        <th>Fecha Modificacion</th>
+                        <th>Cargo</th>
+                        @if (session('nombre') && session('descripcion') == 'Administrador')
                         <th>Acciones</th>
+                        @else
+                            
+                        @endif
                         </tr>
                 </thead>
                 <tbody id="resultados-usuarios">
@@ -82,6 +75,10 @@
                             <td>{{ $usuario->edad }}</td>
                             <td>{{ $usuario->correo }}</td>
                             <td>{{ $usuario->created_at }}</td>
+                            <td>{{ $usuario->updated_at }}</td>
+                            <td>{{ $usuario->cargos }}</td>
+                            {{-- {{-- <td>{{ $usuario->cargo_id --}}
+                            @if(Session('nombre') && session('descripcion') == 'Administrador')
                             <td>
                                 {{-- {{ route('Usuarios.editar', $usuario->id) }} --}}
                                 <a href="{{route('Usuarios.modificar_html', $usuario->id)}}" class="btn btn-warning btn-sm">
@@ -96,6 +93,8 @@
                                     </button>
                                 </form>
                             </td>
+                            @else
+                            @endif
                         </tr>
                     @empty
                         <tr>
@@ -130,5 +129,4 @@
             <a href="{{route('index')}}" class="btn btn-outline-secondary">Volver al inicio</a>
         </div>
     </div>
-</body>
-</html>
+@endsection
