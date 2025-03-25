@@ -57,6 +57,17 @@
                                     value="{{ $usuario->telefono }}">
                             </div>
                             <div class="mb-2">
+                                <label for="correo" class="form-label">rol</label>
+                                <section>
+                                    <select id="rol" name="rol" class="form-select">
+                                        @foreach ($roles as $rol)
+                                        <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
+                                            
+                                        @endforeach
+                                    </select>
+                                </section>
+                            </div>
+                            <div class="mb-2">
                                 <label for="correo" class="form-label">Correo Electrónico</label>
                                 <input id="correo" type="email" name="correo" class="form-control" value="{{ $usuario->correo }}">
                             </div>
