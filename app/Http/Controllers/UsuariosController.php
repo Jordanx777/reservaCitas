@@ -5,15 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Cargo;
 
 class UsuariosController extends Controller
 {
     public function Index(){
-        return view('index');
+        return view('landing');
+    }
+    public function principal(){
+        return view('inicio');
     }
     public function Formulario()
     {
-        return view('usuarios.formulario');
+        $roles = Cargo::all();
+        return view('usuarios.formulario', ['roles' => $roles]);
     }
     public function Landing(){
         if (session()->has('nombre')) {
@@ -23,17 +28,24 @@ class UsuariosController extends Controller
         }
     }
     public function Login_html(){
-        
+
         return view('usuarios/login');
     }
     public function Mostrar_usuarios(){
         if (session()->has('nombre')) {
             
         //consulta a la base de datos para obtener todos los usuarios
-            $usuarios = DB::table('Usuarios')->get();
+            $usuarios = DB::table('Usuarios')->join('cargos', 'Usuarios.cargo_id', '=', 'cargos.id')->select('Usuarios.*', 'cargos.descripcion as cargos')->get();
+
+            // dd($usuarios);
+        //consulta a la base de datos para obtener todos los roles
+
+        // $roles = Cargo::find($usuarios->cargo_id);
+
+        $roles = Cargo::whereIn('id', $usuarios->pluck('cargo_id'))->get();// Obtener los roles relacionados con los usuarios
 
         //retorna la vista mostrar con los usuarios
-            return view('usuarios.usuarios', ['usuarios' => $usuarios]);
+            return view('usuarios.usuarios', ['usuarios' => $usuarios],[ 'roles' => $roles]);
         }else {
             return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red']);
         }
@@ -51,6 +63,7 @@ class UsuariosController extends Controller
             'edad' => 'required',
             'correo' => 'required|email',
             'contraseña' => 'required|min:6|confirmed',
+            'rol'=> 'required',
         ]);
 
         //obtiene los valores de los campos
@@ -60,9 +73,9 @@ class UsuariosController extends Controller
         $edad = $request->input('edad');
         $correo = $request->input('correo');
         $contraseña = $request->input('contraseña');
-        $confirmar_contraseña = $request->input('contraseña_confirmation');
+        $cargo_id = $request->input('rol');
 
-        // dump("Nombre: $nombre, Apellidos: $apellidos, Telefono: $telefono, Edad: $edad, Correo: $correo Contraseña: $contraseña, Confirmar Contraseña: $confirmar_contraseña");
+        //  dd("Nombre: $nombre, Apellidos: $apellidos, Telefono: $telefono, Edad: $edad, Correo: $correo Contraseña: $contraseña, Confirmar Contraseña: $confirmar_contraseña, rol: $cargo_id");
 
         //inserta los valores en la base de datos
         $consulta = DB::table('Usuarios')->insert([
@@ -72,6 +85,7 @@ class UsuariosController extends Controller
             'edad' => $edad,
             'correo' => $correo,
             'contraseña' => Hash::make($contraseña),
+            'cargo_id' => $cargo_id,
             'created_at' => now(),
         ]);
         // dump($consulta);
@@ -89,8 +103,14 @@ class UsuariosController extends Controller
         //consulta a la base de datos para obtener el usuario con el id
         $usuario = DB::table('Usuarios')->where('id', $id)->first();
         // dd("ID: ".$usuario->id, "Nombre: ".$usuario->nombre, "Apellidos: ".$usuario->apellidos, "Telefono: ".$usuario->telefono, "Edad: ".$usuario->edad, "Correo: ".$usuario->correo);
+
+        // $roles = Cargo::find($usuario->cargo_id);
+
+        $roles = Cargo::all();
+
+        // dd($roles);
         //retorna la vista modificar con el usuario
-        return view('usuarios.editar', ['usuario' => $usuario]);
+        return view('usuarios.editar', ['usuario' => $usuario], ['roles' => $roles]);
     }
 
     public function Actualizacion(Request $request, $id){
@@ -102,6 +122,7 @@ class UsuariosController extends Controller
             'edad' => 'required',
             'correo' => 'required|email',
             'contraseña' => 'nullable|min:6|confirmed',
+            'rol'=> 'required',
         ]);
 
         //obtiene los valores de los campos
@@ -111,18 +132,28 @@ class UsuariosController extends Controller
         $edad = $request->input('edad');
         $correo = $request->input('correo');
         $contraseña = $request->input('contraseña');
+        $rol = $request->input('rol');
 
-        //actualiza los valores en la base de datos
-        $consulta = DB::table('Usuarios')->where('id', $id)->update([
+        $datos = [
             'nombre' => $nombre,
             'apellidos' => $apellidos,
             'telefono' => $telefono,
             'edad' => $edad,
             'correo' => $correo,
-            'contraseña' => Hash::make($contraseña),
+            'cargo_id' => $rol,
             'updated_at' => now(),
-        ]);
-        // dump($consulta);
+        ];
+
+        // if ($request->filled('contraseña')) {
+
+        //     $datos['contraseña'] = Hash::make($contraseña);
+        // }
+        if (!empty($contraseña)) {
+            $datos['contraseña'] = Hash::make($contraseña);
+        }
+
+        //actualiza los valores en la base de datos
+        $consulta = DB::table('Usuarios')->where('id', $id)->update($datos);
 
         //si la consulta es correcta redirecciona al formulario con un mensaje
         if ($consulta) {
@@ -162,25 +193,43 @@ class UsuariosController extends Controller
         $correo = $request->input('correo');
         $contraseña = $request->input('contraseña');
 
+        // dump("Correo: ".$correo, "Contraseña: ".$contraseña);
+
         //consulta a la base de datos si el correo existe
         $consulta = DB::table('Usuarios')->where('correo', $correo)->first();
+
         // dump($consulta);
+
+        $roles = Cargo::find($consulta->cargo_id);
+
+        // dump($roles);
+
+        // dd($roles->descripcion);
 
         //si el correo existe
         if($consulta){
-            //guarda los valores de la consulta en variables de sesion
-           session([
-                'nombre' => $consulta->nombre,
-                'apellidos' => $consulta->apellidos,
-                'telefono' => $consulta->telefono,
-                'edad' => $consulta->edad,
-                'correo' => $consulta->correo,
-                'created_at' => $consulta->created_at,
-            ]);
             // verifica si la contraseña es correcta
             if(Hash::check($contraseña, $consulta->contraseña)){
+                //guarda los valores de la consulta en variables de sesion
+           session([
+            'nombre' => $consulta->nombre,
+            'apellidos' => $consulta->apellidos,
+            'telefono' => $consulta->telefono,
+            'edad' => $consulta->edad,
+            'correo' => $consulta->correo,
+            'cargo_id' => $consulta->cargo_id,
+            'descripcion' => $roles->descripcion,
+            'created_at' => $consulta->created_at,
+        ]);
                 //si es correcta redirecciona a la vista landing
-                return redirect()->route('landing')->with(['mensaje'=> 'Bienvenido', 'color' => 'green']);
+                if ($consulta->cargo_id == 1) {
+                    return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'Bienvenido', 'color' => 'green']);    
+                }elseif($consulta->cargo_id == 2){
+                    return redirect()->route('landing')->with(['mensaje'=> 'Bienvenido', 'color' => 'green']);
+                }
+                else {
+                    return redirect()->route('login_html')->with(['mensaje'=> 'No tienes permisos para ingresar', 'color' => 'red']);
+                }
                 // si no es correcta redirecciona al login
             }else{
                 return redirect()->route('login_html')->with(['mensaje'=> 'Contraseña incorrecta', 'color' => 'red']);
