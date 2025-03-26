@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.menu')
+@section('titulo', 'Editar Usuario')
+@section('contenido')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Editar Usuarios</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
     <div class="container mt-5">
         <h3 class="text-center">Editar Usuario</h3>
         @if (session('mensaje'))
@@ -59,12 +51,26 @@
                             <div class="mb-2">
                                 <label for="correo" class="form-label">rol</label>
                                 <section>
-                                    <select id="rol" name="rol" class="form-select">
+                                    <select id="rol" name="rol" class="form-select" required>
+                                        @if (session('cargo')== 1)
+                                        @foreach($roles as $valor)
+                                            {{-- <option value="{{ session('rol') }}">{{ session('rol') }}</option> --}}
+                                            <option value="{{ $valor->id }}">{{ $valor->descripcion }}</option>
+                                        @endforeach
+                                        @else
+                                        @foreach($roles as $valor)
+                                                @if($valor->descripcion == 'Usuario') 
+                                                    <option value="{{ $valor->id }}">{{ $valor->descripcion }}</option>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    {{-- <select id="rol" name="rol" class="form-select">
                                         @foreach ($roles as $rol)
                                         <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
                                             
                                         @endforeach
-                                    </select>
+                                    </select> --}}
                                 </section>
                             </div>
                             <div class="mb-2">
@@ -95,6 +101,4 @@
     <div class="mb-2">
         <a href="{{ route('Usuarios.mostrar') }}" class="btn btn-primary">Regresar</a>
     </div>
-</body>
-
-</html>
+@endsection
