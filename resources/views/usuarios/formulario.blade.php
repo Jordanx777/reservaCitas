@@ -31,12 +31,12 @@
 
                         <div class="mb-2">
                             <label for="edad" class="form-label">Edad</label>
-                            <input id="edad" type="text" name="edad" class="form-control" required>
+                            <input id="edad" type="number" name="edad" class="form-control" required>
                         </div>
 
                         <div class="mb-2">
                             <label for="telefono" class="form-label">Número Telefónico</label>
-                            <input id="telefono" type="text" name="telefono" class="form-control" required>
+                            <input id="telefono" type="number" name="telefono" class="form-control" required>
                         </div>
                         
                         <div class="mb-2">
@@ -54,8 +54,6 @@
                                         @endif
                                     @endforeach
                                 @endif
-                                @foreach($roles as $valor )
-                                @endforeach
                             </select>
                         </div>
                         <div class="mb-2">
