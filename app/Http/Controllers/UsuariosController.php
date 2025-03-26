@@ -31,16 +31,48 @@ class UsuariosController extends Controller
 
         return view('usuarios/login');
     }
+
+    public function Perfil(){
+
+        if (session()->has('nombre')) {
+            
+        $id = session('id');
+        $nombre = session('nombre');
+        $apellidos = session('apellidos');
+        $telefono = session('telefono');
+        $edad = session('edad');
+        $correo = session('correo');
+        $cargo_id = session('cargo');
+        $descripcion = session('descripcion');
+        $fecha_creacion = session('created_at');
+        $fecha_actualizacion = session('updated_at');
+
+        if (!$id) {
+            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesión para continuar', 'color' => 'red']);
+        }
+        
+        
+        $usuario = DB::table('Usuarios')->where('id', $id)->first();
+
+        // dump($usuario);
+
+        if (!$usuario) {
+            return redirect()->route('login_html')->with(['mensaje'=> 'Usuario no encontrado', 'color' => 'red']);
+        }
+
+        $cargos = Cargo::all();
+
+        // dump($cargos);
+            return view('usuarios/perfil',compact('id','nombre','apellidos','telefono','edad','correo','descripcion','fecha_creacion','fecha_actualizacion','cargo_id','cargos'));
+        }else {
+            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red']);
+        }
+    }
     public function Mostrar_usuarios(){
         if (session()->has('nombre')) {
             
         //consulta a la base de datos para obtener todos los usuarios
-            $usuarios = DB::table('Usuarios')->join('cargos', 'Usuarios.cargo_id', '=', 'cargos.id')->select('Usuarios.*', 'cargos.descripcion as cargos')->get();
-
-            // dd($usuarios);
-        //consulta a la base de datos para obtener todos los roles
-
-        // $roles = Cargo::find($usuarios->cargo_id);
+        $usuarios = DB::table('Usuarios')->join('cargos', 'Usuarios.cargo_id', '=', 'cargos.id')->select('Usuarios.*', 'cargos.descripcion as cargos')->get();
 
         $roles = Cargo::whereIn('id', $usuarios->pluck('cargo_id'))->get();// Obtener los roles relacionados con los usuarios
 
@@ -49,8 +81,6 @@ class UsuariosController extends Controller
         }else {
             return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red']);
         }
-       
-       
     }
     public function RegistrarU(Request $request)
     {
@@ -194,11 +224,13 @@ class UsuariosController extends Controller
         $contraseña = $request->input('contraseña');
 
         // dump("Correo: ".$correo, "Contraseña: ".$contraseña);
-
-        //consulta a la base de datos si el correo existe
         $consulta = DB::table('Usuarios')->where('correo', $correo)->first();
 
+        if (!$consulta) {
+            return redirect()->route('login_html')->with(['mensaje'=> 'el Correo no existe', 'color' => 'red']);
+        }
         // dump($consulta);
+        
 
         $roles = Cargo::find($consulta->cargo_id);
 
@@ -212,15 +244,28 @@ class UsuariosController extends Controller
             if(Hash::check($contraseña, $consulta->contraseña)){
                 //guarda los valores de la consulta en variables de sesion
            session([
+            'id' => $consulta->id,
             'nombre' => $consulta->nombre,
             'apellidos' => $consulta->apellidos,
             'telefono' => $consulta->telefono,
             'edad' => $consulta->edad,
             'correo' => $consulta->correo,
-            'cargo_id' => $consulta->cargo_id,
+            'cargo' => $consulta->cargo_id,
             'descripcion' => $roles->descripcion,
             'created_at' => $consulta->created_at,
+            'updated_at' => $consulta->updated_at,
         ]);
+
+        // session([
+        //     'id' => $consulta->id, // Agrega esta línea
+        //     'nombre' => $consulta->nombre,
+        //     'apellidos' => $consulta->apellidos,
+        //     'telefono' => $consulta->telefono,
+        //     'edad' => $consulta->edad,
+        //     'correo' => $consulta->correo,
+        //     'descripcion' => $roles->descripcion,
+        //     'created_at' => $consulta->created_at,
+        // ]);
                 //si es correcta redirecciona a la vista landing
                 if ($consulta->cargo_id == 1) {
                     return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'Bienvenido', 'color' => 'green']);    
