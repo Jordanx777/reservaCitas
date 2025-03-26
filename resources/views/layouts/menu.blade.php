@@ -16,7 +16,6 @@
             <strong class="navbar-brand" href="#">hola {{session('nombre')}}</strong>
             @else
             @endif
-            <a class="navbar-brand" href="#"> Bienvenido a ...</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
