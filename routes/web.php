@@ -42,3 +42,5 @@ Route::post('/usuarios/actualizar/{id}', [UsuariosController::class,'Actualizaci
 Route::delete('/usuarios/Eliminar/{id}', [UsuariosController::class,'Eliminar'])->name('Usuarios.eliminar');
 // esta es para la vista de la landing la cual uso cuando inicia sesion
 Route::get('/landing', [UsuariosController::class,'Landing'])->name('landing');
+// esta es para la vista del perfil de usuarios 
+Route::get('/usuarios/Perfil', [UsuariosController::class,'Perfil'])->name('Usuarios.Perfil');
