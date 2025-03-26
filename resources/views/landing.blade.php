@@ -24,6 +24,7 @@
                     <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
                     <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{route('Usuarios.Perfil')}}">Perfil</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{route('login_html')}}">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{route('Usuarios.mostrar')}}">Usuarios</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{route('index')}}">Inicio</a></li>
