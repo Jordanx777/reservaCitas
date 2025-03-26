@@ -38,11 +38,23 @@
                             <label for="telefono" class="form-label">Número Telefónico</label>
                             <input id="telefono" type="text" name="telefono" class="form-control" required>
                         </div>
+                        
                         <div class="mb-2">
                             <label for="rol" class="form-label">Rol</label>
                             <select id="rol" name="rol" class="form-select" required>
-                                @foreach($roles as $valor )
+                                @if (session('cargo')== 1)
+                                @foreach($roles as $valor)
+                                    {{-- <option value="{{ session('rol') }}">{{ session('rol') }}</option> --}}
                                     <option value="{{ $valor->id }}">{{ $valor->descripcion }}</option>
+                                @endforeach
+                                @else
+                                @foreach($roles as $valor)
+                                        @if($valor->descripcion == 'Usuario') 
+                                            <option value="{{ $valor->id }}">{{ $valor->descripcion }}</option>
+                                        @endif
+                                    @endforeach
+                                @endif
+                                @foreach($roles as $valor )
                                 @endforeach
                             </select>
                         </div>
