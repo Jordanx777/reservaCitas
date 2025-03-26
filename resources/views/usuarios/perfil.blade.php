@@ -30,14 +30,14 @@
                 <p><strong>Fecha de creacion :</strong> {{ $fecha_creacion}}</p>
                 <p><strong>Fecha de actualizacion :</strong> {{ $fecha_actualizacion}}</p>
                 <p><strong>Cargo:</strong> {{ $descripcion}}</p>
-                <p><strong>Rol:</strong> {{ $cargo_id}}</p>
+                {{-- <p><strong>Rol:</strong> {{ $cargo_id}}</p> --}}
                 <p><strong>Correo:</strong> {{ $correo}}</p>
             @else
                 <p>Los datos del usuario no están disponibles.</p>
             @endif
             <div class="d-flex justify-content-between mt-3">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button>
-                <form action="{{route('Cerrar')}}" method="POST">
+                <form action="{{route('Cerrar')}}" method="get">
                     @csrf
                     <button type="submit" class="btn btn-danger">Cerrar sesión</button>
                 </form>
@@ -92,7 +92,7 @@
                         </select>
                     @else
                         <input type="text" class="form-control" value="{{ $descripcion }}" disabled>
-                        <input type="hidden" name="cargo" value="{{ $cargo }}">
+                        <input type="hidden" name="cargo" value="{{ $cargo_id }}">
                     @endif
                 </div>
             </div>
