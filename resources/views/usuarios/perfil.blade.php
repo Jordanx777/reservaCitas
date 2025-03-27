@@ -49,7 +49,7 @@
 <!-- Modal de Edición -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="" method="POST" class="modal-content">
+        <form action="{{route('Usuarios.Actualizar_Perfil',$id)}}" method="POST" class="modal-content">
             @csrf
             @method('put')
             <div class="modal-header">
@@ -63,7 +63,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="apellido" class="form-label">Apellido</label>
-                    <input type="text" class="form-control" id="apellido" name="apellido" value="{{ old('apellidos', session('apellidos')) }}" required>
+                    <input type="text" class="form-control" id="apellido" name="apellidos" value="{{ old('apellidos', session('apellidos')) }}" required>
                 </div>
                 <div class="mb-3">
                     <label for="telefono" class="form-label">Teléfono</label>
@@ -80,6 +80,10 @@
                 <div class="mb-3">
                     <label for="contraseña" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Dejar en blanco para no cambiar">
+                </div>
+                <div class="mb-3">
+                    <label for="contraseña_confirmation" class="form-label">Comfirmar Contraseña</label>
+                    <input type="password" class="form-control" id="contraseña_confirmation" name="contraseña_confirmation" placeholder="Dejar en blanco para no cambiar">
                 </div>
 
                 <div class="mb-3">
