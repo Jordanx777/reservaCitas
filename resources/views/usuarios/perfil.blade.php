@@ -30,7 +30,7 @@
                 <p><strong>Fecha de creacion :</strong> {{ $fecha_creacion}}</p>
                 <p><strong>Fecha de actualizacion :</strong> {{ $fecha_actualizacion}}</p>
                 <p><strong>Cargo:</strong> {{ $descripcion}}</p>
-                <p><strong>Rol:</strong> {{ $cargo_id}}</p>
+                {{-- <p><strong>Rol:</strong> {{ $cargo_id}}</p> --}}
                 <p><strong>Correo:</strong> {{ $correo}}</p>
             @else
                 <p>Los datos del usuario no están disponibles.</p>
@@ -49,7 +49,7 @@
 <!-- Modal de Edición -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="" method="POST" class="modal-content">
+        <form action="{{route('Usuarios.Actualizar_Perfil',$id)}}" method="POST" class="modal-content">
             @csrf
             @method('put')
             <div class="modal-header">
@@ -63,7 +63,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="apellido" class="form-label">Apellido</label>
-                    <input type="text" class="form-control" id="apellido" name="apellido" value="{{ old('apellidos', session('apellidos')) }}" required>
+                    <input type="text" class="form-control" id="apellido" name="apellidos" value="{{ old('apellidos', session('apellidos')) }}" required>
                 </div>
                 <div class="mb-3">
                     <label for="telefono" class="form-label">Teléfono</label>
@@ -81,6 +81,10 @@
                     <label for="contraseña" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Dejar en blanco para no cambiar">
                 </div>
+                <div class="mb-3">
+                    <label for="contraseña_confirmation" class="form-label">Comfirmar Contraseña</label>
+                    <input type="password" class="form-control" id="contraseña_confirmation" name="contraseña_confirmation" placeholder="Dejar en blanco para no cambiar">
+                </div>
 
                 <div class="mb-3">
                     <label for="cargo" class="form-label">Cargo</label>
@@ -92,7 +96,7 @@
                         </select>
                     @else
                         <input type="text" class="form-control" value="{{ $descripcion }}" disabled>
-                        {{-- <input type="hidden" name="cargo" value="{{ $cargo }}"> --}}
+                        <input type="hidden" name="cargo" value="{{ $cargo_id }}">
                     @endif
                 </div>
             </div>

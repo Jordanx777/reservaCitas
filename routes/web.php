@@ -44,3 +44,7 @@ Route::delete('/usuarios/Eliminar/{id}', [UsuariosController::class,'Eliminar'])
 Route::get('/landing', [UsuariosController::class,'Landing'])->name('landing');
 // esta es para la vista del perfil de usuarios 
 Route::get('/usuarios/Perfil', [UsuariosController::class,'Perfil'])->name('Usuarios.Perfil');
+
+Route::put('/Usuarios/perfil/actualizar/{id}',[UsuariosController::class,'Actualizar_Perfil'])->name('Usuarios.Actualizar_Perfil');
+
+Route::get('/Usuarios/olvide', [UsuariosController::class,'Olvide_Mi_Contraseña'])->name('Usuarios.Olvide');

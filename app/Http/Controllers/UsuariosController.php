@@ -68,6 +68,58 @@ class UsuariosController extends Controller
             return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red']);
         }
     }
+    public function Actualizar_Perfil(Request $request, $id){
+        // verifica que los campos no esten vacios y en el campo de correo sea tipo correo
+        $request->validate([
+            'nombre' => 'required',
+            'apellidos' => 'required',
+            'telefono' => 'required',
+            'edad' => 'required',
+            'correo' => 'required|email',
+            'contraseña' => 'nullable|min:6|confirmed',
+            'cargo'=> 'required',
+        ]);
+
+        //obtengo los valores de los campos
+        $nombre = $request->input('nombre');
+        $apellidos = $request->input('apellidos');
+        $telefono = $request->input('telefono');
+        $edad = $request->input('edad');
+        $correo = $request->input('correo');
+        $contraseña = $request->input('contraseña');
+        $cargo = $request->input('cargo');
+
+        $datos = [
+            'nombre' => $nombre,
+            'apellidos' => $apellidos,
+            'telefono' => $telefono,
+            'edad' => $edad,
+            'correo' => $correo,
+            'cargo_id' => $cargo,
+            'updated_at' => now(),
+        ];
+
+        // if ($request->filled('contraseña')) {
+
+        //     $datos['contraseña'] = Hash::make($contraseña);
+        // }
+        if (!empty($contraseña)) {
+            $datos['contraseña'] = Hash::make($contraseña);
+        }
+
+        //actualiza los valores en la base de datos
+        $consulta = DB::table('Usuarios')->where('id', $id)->update($datos);
+
+        //si la consulta es correcta redirecciona al formulario con un mensaje
+        if ($consulta) {
+            return redirect()->route('Usuarios.Perfil')->with('mensaje', 'Usuario actualizado correctamente');
+        } else {
+            //si la consulta es incorrecta redirecciona al formulario con un mensaje
+            return redirect()->route('Usuarios.Perfil')->with('error', 'algo a fallado correctamente');
+        }
+    }
+
+
     public function Mostrar_usuarios(){
         if (session()->has('nombre')) {
             
@@ -234,9 +286,6 @@ class UsuariosController extends Controller
 
         $roles = Cargo::find($consulta->cargo_id);
 
-        // dump($roles);
-
-        // dd($roles->descripcion);
 
         //si el correo existe
         if($consulta){
@@ -256,16 +305,6 @@ class UsuariosController extends Controller
             'updated_at' => $consulta->updated_at,
         ]);
 
-        // session([
-        //     'id' => $consulta->id, // Agrega esta línea
-        //     'nombre' => $consulta->nombre,
-        //     'apellidos' => $consulta->apellidos,
-        //     'telefono' => $consulta->telefono,
-        //     'edad' => $consulta->edad,
-        //     'correo' => $consulta->correo,
-        //     'descripcion' => $roles->descripcion,
-        //     'created_at' => $consulta->created_at,
-        // ]);
                 //si es correcta redirecciona a la vista landing
                 if ($consulta->cargo_id == 1) {
                     return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'Bienvenido', 'color' => 'green']);    
@@ -290,6 +329,10 @@ class UsuariosController extends Controller
         session()->flush();
         // y redirecciona al login
         return redirect()->route('login_html')->with(['mensaje'=> 'Sesion cerrada', 'color' => 'green']);
+    }
+
+    public function Olvide_Mi_Contraseña(){
+        return redirect()->route('login_html')->with(['mensaje'=> 'Acuerdate', 'color' => 'red']);
     }
     
     

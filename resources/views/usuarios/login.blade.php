@@ -21,19 +21,9 @@
                     <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
                 </div>
             </form>
-
-            <a class="link-recuperar" href="{{ route('usuarios.formulario') }}">¿no tienes cuenta?</a>
-            <a class="link-recuperar" href="">¿Olvidaste tu contraseña?</a>
-            {{-- <script>
-                @if(session('mensaje'))
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "{{ session('mensaje') }}",
-                        footer: '<a href="#">Why do I have this issue?</a>'
-                    });
-                @endif
-            </script> --}}
+            
+            <a class="link-recuperar" href="{{route('usuarios.formulario')}}">¿no tienes cuenta?</a>
+            <a class="link-recuperar" href="{{route('Usuarios.Olvide')}}">¿Olvidaste tu contraseña?</a>
             
         </div>
     </div>
