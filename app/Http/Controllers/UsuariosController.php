@@ -330,6 +330,10 @@ class UsuariosController extends Controller
         // y redirecciona al login
         return redirect()->route('login_html')->with(['mensaje'=> 'Sesion cerrada', 'color' => 'green']);
     }
+
+    public function Olvide_Mi_Contraseña(){
+        return redirect()->route('login_html')->with(['mensaje'=> 'Acuerdate', 'color' => 'red']);
+    }
     
     
 }
