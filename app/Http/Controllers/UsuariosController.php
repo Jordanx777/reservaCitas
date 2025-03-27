@@ -24,7 +24,7 @@ class UsuariosController extends Controller
         if (session()->has('nombre')) {
             return view('landing');
         } else {
-            return redirect()->route('login_html')->with('mensaje', 'Inicia sesión para continuar');
+            return redirect()->route('login_html')->with(['mensaje', 'Inicia sesión para continuar','icon' => 'error', 'title' => 'Oops...']);
         }
     }
     public function Login_html(){
@@ -48,7 +48,7 @@ class UsuariosController extends Controller
         $fecha_actualizacion = session('updated_at');
 
         if (!$id) {
-            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesión para continuar', 'color' => 'red']);
+            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesión para continuar', 'color' => 'red', 'icon' => 'error', 'title' => 'Oops...']);
         }
         
         
@@ -65,7 +65,7 @@ class UsuariosController extends Controller
         // dump($cargos);
             return view('usuarios/perfil',compact('id','nombre','apellidos','telefono','edad','correo','descripcion','fecha_creacion','fecha_actualizacion','cargo_id','cargos'));
         }else {
-            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red']);
+            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red', 'icon' => 'error', 'title' => 'Oops...']);
         }
     }
     public function Actualizar_Perfil(Request $request, $id){
@@ -131,7 +131,7 @@ class UsuariosController extends Controller
         //retorna la vista mostrar con los usuarios
             return view('usuarios.usuarios', ['usuarios' => $usuarios],[ 'roles' => $roles]);
         }else {
-            return redirect()->route('login_html')->with(['mensaje'=> 'Debes iniciar sesion', 'color' => 'red']);
+            return redirect()->route('login_html')->with(['mensaje'=> 'Debes iniciar sesion', 'color' => 'red', 'icon' => 'error', 'title' => 'Oops...' ]);
         }
     }
     public function RegistrarU(Request $request)
@@ -174,10 +174,10 @@ class UsuariosController extends Controller
 
         //si la consulta es correcta redirecciona al formulario con un mensaje
         if ($consulta) {
-            return redirect()->route('Usuarios.mostrar')->with('mensaje', 'Usuario registrado correctamente');
+            return redirect()->route('Usuarios.mostrar')->with(['mensaje', 'Usuario registrado correctamente', 'icon' => 'success']);
         } else {
             //si la consulta es incorrecta redirecciona al formulario con un mensaje
-            return redirect()->route('usuarios.formulario')->with('error', 'algo a fallado correctamente');
+            return redirect()->route('usuarios.formulario')->with('error', 'algo ha fallado correctamente');
         }
 
     }
@@ -279,7 +279,7 @@ class UsuariosController extends Controller
         $consulta = DB::table('Usuarios')->where('correo', $correo)->first();
 
         if (!$consulta) {
-            return redirect()->route('login_html')->with(['mensaje'=> 'el Correo no existe', 'color' => 'red']);
+            return redirect()->route('login_html')->with(['mensaje'=> 'el Correo no existe', 'color' => 'red', 'icon' => 'error', 'title' => 'Oops...']);
         }
         // dump($consulta);
         
@@ -307,7 +307,7 @@ class UsuariosController extends Controller
 
                 //si es correcta redirecciona a la vista landing
                 if ($consulta->cargo_id == 1) {
-                    return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'Bienvenido', 'color' => 'green']);    
+                    return redirect()->route('Usuarios.mostrar')->with(['mensaje'=> 'Bienvenido', 'color' => 'green', 'icon' => 'success']);    
                 }elseif($consulta->cargo_id == 2){
                     return redirect()->route('landing')->with(['mensaje'=> 'Bienvenido', 'color' => 'green']);
                 }

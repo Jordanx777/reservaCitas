@@ -39,9 +39,9 @@
         <script>
             @if(session('mensaje'))
                 Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "{{ session('mensaje') }}"
+                    icon: "{{ session('icon') }}",
+                    title: "{{ session('title') }}",
+                    text: "{{ session('mensaje') }} {{session('nombreBienvenida')}}"
                 });
             @endif
         </script>
