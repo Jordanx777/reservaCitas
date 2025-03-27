@@ -22,7 +22,7 @@
             </form>
             
             <a class="link-recuperar" href="{{route('usuarios.formulario')}}">¿no tienes cuenta?</a>
-            <a class="link-recuperar" href="">¿Olvidaste tu contraseña?</a>
+            <a class="link-recuperar" href="{{route('Usuarios.Olvide')}}">¿Olvidaste tu contraseña?</a>
             
         </div>
     </div>
