@@ -37,7 +37,7 @@
             @endif
             <div class="d-flex justify-content-between mt-3">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button>
-                <form action="{{route('Cerrar')}}" method="POST">
+                <form action="{{route('Cerrar')}}" method="GET">
                     @csrf
                     <button type="submit" class="btn btn-danger">Cerrar sesión</button>
                 </form>
@@ -92,7 +92,7 @@
                         </select>
                     @else
                         <input type="text" class="form-control" value="{{ $descripcion }}" disabled>
-                        <input type="hidden" name="cargo" value="{{ $cargo }}">
+                        {{-- <input type="hidden" name="cargo" value="{{ $cargo }}"> --}}
                     @endif
                 </div>
             </div>

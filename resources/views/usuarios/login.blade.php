@@ -1,14 +1,15 @@
-
-    @extends('layouts.menu')
-    @section('contenido')
+@extends('layouts.menu')
+@section('contenido')
     @push('estilos')
-    <link rel="stylesheet" href="{{asset('css/login.css')}}">
+        <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    
+
     @endpush
     <div class="login-container">
         <div class="login-card">
             <h2 class="text-center">Inicia Sesión</h2>
             {{-- <p class="text-center text-secondary">Conéctate con tus datos</p> --}}
-            <form action="{{route('login')}}" method="post">
+            <form action="{{ route('login') }}" method="post">
                 @csrf
                 <div class="mb-3">
                     <input type="text" name="correo" class="form-control" placeholder="Correo Electrónico" required>
@@ -20,21 +21,31 @@
                     <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
                 </div>
             </form>
-            
-            <a class="link-recuperar" href="{{route('usuarios.formulario')}}">¿no tienes cuenta?</a>
+
+            <a class="link-recuperar" href="{{ route('usuarios.formulario') }}">¿no tienes cuenta?</a>
             <a class="link-recuperar" href="">¿Olvidaste tu contraseña?</a>
+            {{-- <script>
+                @if(session('mensaje'))
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "{{ session('mensaje') }}",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                    });
+                @endif
+            </script> --}}
             
         </div>
     </div>
-    <form id="myForm" action="{{route('usuarios.formulario')}}" onsubmit="showLoading()" method="post">
+    <form id="myForm" action="{{ route('usuarios.formulario') }}" onsubmit="showLoading()" method="post">
         @csrf
         <button id="usuario" class="btn btn-outline-secondary" value="agg usuarios">
             <i class="fa-solid fa-user-plus"></i> Agregar usuarios
         </button>
     </form>
-    <form id="myForm" action="{{route('index')}}" onsubmit="showLoading()" method="get">
+    <form id="myForm" action="{{ route('index') }}" onsubmit="showLoading()" method="get">
         <button class="btn btn-outline-secondary" value="inicio">
             <i class="fa-solid fa-house"></i> Inicio
         </button>
     </form>
-    @endsection
+@endsection

@@ -23,8 +23,8 @@ class UsuariosController extends Controller
     public function Landing(){
         if (session()->has('nombre')) {
             return view('landing');
-        }else {
-            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red']);
+        } else {
+            return redirect()->route('login_html')->with('mensaje', 'Inicia sesión para continuar');
         }
     }
     public function Login_html(){
@@ -79,7 +79,7 @@ class UsuariosController extends Controller
         //retorna la vista mostrar con los usuarios
             return view('usuarios.usuarios', ['usuarios' => $usuarios],[ 'roles' => $roles]);
         }else {
-            return redirect()->route('login_html')->with(['mensaje'=> 'Inicia sesion para continuar', 'color' => 'red']);
+            return redirect()->route('login_html')->with(['mensaje'=> 'Debes iniciar sesion', 'color' => 'red']);
         }
     }
     public function RegistrarU(Request $request)
