@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\HorariosController;
+
+// require base_path('routes/api.php');
+
 
 // esta ruta es la que se ejecuta al iniciar el proyecto
 Route::get('/', [UsuariosController::class,'Index'])->name('index');
@@ -9,7 +13,7 @@ Route::get('/', [UsuariosController::class,'Index'])->name('index');
 Route::match(['get', 'post'], '/inicio', [UsuariosController::class, 'principal'])->name('Principal');
 
 // esta ruta es para el formulario de registro
-Route::post('/usuarios', [UsuariosController::class,'Formulario'])->name('usuarios.formulario');
+// Route::post('/usuarios', [UsuariosController::class,'Formulario'])->name('usuarios.formulario');
 Route::match(['get','post'],'/usuarios', [UsuariosController::class,'Formulario'])->name('usuarios.formulario');
 //esta es para registrar los datos del formulario
 // Route::post('/usuarios/Registrar', [UsuariosController::class,'RegistrarU'])->name('usuarios.registrar');
@@ -48,3 +52,10 @@ Route::get('/usuarios/Perfil', [UsuariosController::class,'Perfil'])->name('Usua
 Route::put('/Usuarios/perfil/actualizar/{id}',[UsuariosController::class,'Actualizar_Perfil'])->name('Usuarios.Actualizar_Perfil');
 
 Route::get('/Usuarios/olvide', [UsuariosController::class,'Olvide_Mi_Contraseña'])->name('Usuarios.Olvide');
+
+
+
+
+
+Route::match(['get', 'post'],'/Horarios', [HorariosController::class,'Home' ])->name('horarios.index');
+
