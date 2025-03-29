@@ -28,6 +28,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{route('login_html')}}">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{route('Usuarios.mostrar')}}">Usuarios</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{route('index')}}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="{{route('horarios.index')}}">Reservar Cita</a></li>
                 </ul>
             </div>
         </div>
@@ -44,5 +45,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
 </body>
 </html>
