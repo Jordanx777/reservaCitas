@@ -28,7 +28,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{route('Usuarios.mostrar')}}">Usuarios</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{route('index')}}">Inicio</a></li>
                     
-                    <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="#">Reservar Cita</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white" href="{{route('horarios.index')}}">Reservar Cita</a></li>
                 </ul>
             </div>
         </div>
