@@ -31,6 +31,35 @@ function CargarHorarios() {
         .catch(error => console.error("Error:", error)); // Maneja errores en la solicitud
 }
 
+document.getElementById("formHorario").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evitar recarga
+
+    let formData = {
+        fecha: document.getElementById("fecha").value,
+        hora: document.getElementById("hora").value
+    };
+    console.log(formData); // Verifica los datos del formulario
+    
+
+    fetch("http://127.0.0.1:8000/api/horarios", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content") // Asegúrate de tener el token CSRF en el <head>
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Horario agregado con éxito"); // Mensaje de éxito
+        document.getElementById("formHorario").reset(); // Limpiar formulario
+        var modal = new bootstrap.Modal(document.getElementById('modalHorario')); // Cerrar modal
+        modal.hide();
+        CargarHorarios(); // Recargar tabla de horarios
+    })
+    .catch(error => console.error("Error:", error));
+}); // Escucha el evento de envío del formulario
+
 // Función para reservar un horario sin recargar la página
 function ReservarHorario(id) { 
     fetch(`http://127.0.0.1:8000/api/horarios/reservar/${id}`, { method: "PUT" }) // Cambia la URL según tu API
