@@ -21,9 +21,14 @@
         </tbody>
     </table>
 </div>
+@if (session('nombre') && session('cargo')==1)
+
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalHorario">
-    Agregar Horario
+  Agregar Horario
 </button>
+@else 
+
+@endif
 <!-- Modal -->
 <div class="modal fade" id="modalHorario" tabindex="-1" aria-labelledby="modalHorarioLabel" aria-hidden="true">
     <div class="modal-dialog">
