@@ -33,7 +33,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
-          <form id="formHorario">
+          <form id="formHorario" >
             @csrf
             <div class="mb-3">
               <label for="fecha" class="form-label">Fecha:</label>
@@ -43,7 +43,7 @@
               <label for="hora" class="form-label">Hora:</label>
               <input type="time" class="form-control" id="hora" name="hora" required>
             </div>
-            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-success" onclick="AgregarHorario()">Guardar</button>
           </form>
           <div id="mensaje" class="mt-3"></div>
         </div>
