@@ -30,15 +30,21 @@ function CargarHorarios() {
         })
         .catch(error => console.error("Error:", error)); // Maneja errores en la solicitud
 }
+function AgregarHorario() { // Función para agregar un nuevo horario
 
-document.getElementById("formHorario").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evitar recarga
+    let fecha = document.getElementById("fecha").value; // Obtener fecha del formulario
+    let hora = document.getElementById("hora").value; // Obtener hora del formulario
 
-    let formData = {
-        fecha: document.getElementById("fecha").value,
-        hora: document.getElementById("hora").value
-    };
-    console.log(formData); // Verifica los datos del formulario
+    if (!fecha || !hora) { // Validar campos
+        alert("Por favor, completa todos los campos."); // Mensaje de error
+        return; // Salir de la función si hay campos vacíos
+        
+    }
+
+    let formData = { // Crear objeto con los datos del formulario
+        fecha: fecha,
+        hora: hora,
+    }
     
 
     fetch("http://127.0.0.1:8000/api/horarios", {
@@ -51,14 +57,21 @@ document.getElementById("formHorario").addEventListener("submit", function(event
     })
     .then(response => response.json())
     .then(data => {
-        alert("Horario agregado con éxito"); // Mensaje de éxito
-        document.getElementById("formHorario").reset(); // Limpiar formulario
-        var modal = new bootstrap.Modal(document.getElementById('modalHorario')); // Cerrar modal
+        // Mensaje de éxito
+        alert("Horario agregado con éxito"); 
+        
+        // Limpiar formulario
+        document.getElementById("formHorario").reset(); 
+
+        // Cerrar modal
+        var modal = new bootstrap.Modal(document.getElementById('modalHorario')); 
         modal.hide();
-        CargarHorarios(); // Recargar tabla de horarios
+
+        // Recargar tabla de horarios
+        CargarHorarios(); 
     })
     .catch(error => console.error("Error:", error));
-}); // Escucha el evento de envío del formulario
+}
 
 // Función para reservar un horario sin recargar la página
 function ReservarHorario(id) { 
