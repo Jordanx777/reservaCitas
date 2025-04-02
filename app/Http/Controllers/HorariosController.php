@@ -40,6 +40,33 @@ class HorariosController extends Controller
         //
     }
 
+    public function Editar(Request $request , $id){
+
+        // validar los datos 
+        $request->validate([
+            'fecha' => 'required|date',
+            'hora' => 'required',
+        ]);
+        // buscar el horario segun su id
+        $horario = Horarios::find($id);
+
+        // verfica si el horario existe
+        if (!$horario) {
+            return response()->json(['mensaje'=>'Horario no encontrado'],404);
+
+        }
+
+        //actualizar los datos del horario
+
+        $horario->fecha = $request->fecha;
+        $horario->hora = $request->hora;
+        $horario->updated_at = now();
+        $horario->save();
+
+        return response()->json(['mensaje'=> 'Horario actualizado correctamente']);
+
+    }
+
     public function Reservar($id){ // Reservar un horario
         // Buscar el horario
         $horario = Horarios::find($id);
