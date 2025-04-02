@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded", function () { // Espera a que el D
 
 // Función para cargar los horarios y mostrarlos en la tabla
 function CargarHorarios() {
+
+    console.log("Sesión en JS:", usuarioSesion.nombre);
+
+    if (usuarioSesion.cargo == 1) {
+        console.log("El usuario es admin. Puede editar horarios.");
+    } else {
+        console.log("El usuario no tiene permisos para editar horarios.");
+    }
+    
     fetch("http://127.0.0.1:8000/api/horarios")  // Cambia la URL según tu API
         .then(response => response.json())  // Convierte la respuesta a JSON
         .then(data => {  // Procesa los datos recibidos
@@ -11,18 +20,31 @@ function CargarHorarios() {
             tableBody.innerHTML = ""; // Limpia el contenido previo de la tabla
 
             data.forEach(horario => {  // Itera sobre cada horario recibido
+                if (usuarioSesion.cargo == 1) {
+                    botoneditar= `
+                    <button onclick="CargarDatosEdicion(${horario.id}, '${horario.fecha}', '${horario.hora}')" class="btn btn-warning">Editar</button>`
+                }
+                else{
+                    botoneditar = ""
+                }
                 let row = `
                     <tr id="fila-${horario.id}">
                         <td>${horario.id}</td>
                         <td>${horario.fecha}</td>
                         <td>${horario.hora}</td>
                         <td id="estado-${horario.id}">${horario.disponible ? "Disponible" : "Reservado"}</td>
+                        <td>${horario.created_at}</td>
+                        <td>${horario.updated_at}</td>
                         <td id="accion-${horario.id}">
-                            ${horario.disponible ? 
+                        ${botoneditar}
+                         ${horario.disponible ? 
+                                // Si el horario está disponible, muestra el botón de reservar
+                                // y oculta el botón de cancelar
                                 `<button onclick="ReservarHorario(${horario.id})" class="btn btn-success">Reservar</button>` :
+                                // Si el horario está reservado, muestra el botón de cancelar
                                 `<button onclick="CancelarReserva(${horario.id})" class="btn btn-danger">Cancelar</button>` 
                             }
-                        </td>
+                            </td>
                     </tr>
                 `; // Crea una fila para la tabla con los datos del horario
                 tableBody.innerHTML += row; // Agrega la fila al cuerpo de la tabla
@@ -71,6 +93,47 @@ function AgregarHorario() { // Función para agregar un nuevo horario
         CargarHorarios(); 
     })
     .catch(error => console.error("Error:", error));
+}
+
+function CargarDatosEdicion(id, fecha, hora) {
+    document.getElementById("editId").value = id;
+    document.getElementById("editFecha").value = fecha;
+    document.getElementById("editHora").value = hora;
+
+    // Mostrar el modal de edición
+    var modal = new bootstrap.Modal(document.getElementById('modalEditarHorario'));
+    modal.show();
+}
+
+
+function Editar(){
+    let id = document.getElementById("editId").value;
+    let fecha = document.getElementById("editFecha").value;
+    let hora = document.getElementById("editHora").value;
+
+    if (!fecha || !hora) {
+        alert("Por favor, completa todos lo campos");
+    }
+
+    let formData = {
+        fecha : fecha,
+        hora : hora
+    }
+    fetch(`http://127.0.0.1:8000/api/horarios/Editar/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content") // Asegúrate de tener el token CSRF en el <head>
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Horario actualizado correctamente");
+        CargarHorarios();
+
+    })
+    .catch(error => console.log("Error :",error));
 }
 
 // Función para reservar un horario sin recargar la página
