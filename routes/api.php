@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/horarios', [HorariosController::class, 'index']);
 Route::post('/horarios', [HorariosController::class, 'store']);
+Route::put('/horarios/Editar/{id}',[HorariosController::class,'Editar']);
 Route::put('/horarios/reservar/{id}', [HorariosController::class, 'Reservar']);
 Route::put('/horarios/cancelar/{id}', [HorariosController::class, 'Cancelar']);
 
