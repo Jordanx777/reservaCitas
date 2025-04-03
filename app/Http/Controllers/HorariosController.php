@@ -99,4 +99,16 @@ class HorariosController extends Controller
         return response()->json(['mensaje' => 'El horario cancelado es', 'horario' => $horario], 200);
 
     }
+
+    public function Eliminar($id){
+
+        $horario = Horarios::find($id);
+        if ($horario) {
+            $horario->delete();
+            return response()->json(['mensaje' => 'El horario ha sido eliminado con exito', 'horario' => $horario]);
+        }else {
+            return response()->json(['mensaje' => 'Algo a fallado exitosamente'],400);
+        }
+
+    }
 }
