@@ -21,11 +21,16 @@ function CargarHorarios() {
 
             data.forEach(horario => {  // Itera sobre cada horario recibido
                 if (usuarioSesion.cargo == 1) {
+                    botoneliminar =`
+                    <button onclick="Eliminar(${horario.id}, '${horario.fecha}', '${horario.hora}')" class="btn btn-danger">Eliminar</button>`
+
                     botoneditar= `
                     <button onclick="CargarDatosEdicion(${horario.id}, '${horario.fecha}', '${horario.hora}')" class="btn btn-warning">Editar</button>`
                 }
                 else{
-                    botoneditar = ""
+                    botoneditar = "";
+                    botoneliminar = "";
+
                 }
                 let row = `
                     <tr id="fila-${horario.id}">
@@ -37,6 +42,7 @@ function CargarHorarios() {
                         <td>${horario.updated_at}</td>
                         <td id="accion-${horario.id}">
                         ${botoneditar}
+                        ${botoneliminar}
                          ${horario.disponible ? 
                                 // Si el horario está disponible, muestra el botón de reservar
                                 // y oculta el botón de cancelar
@@ -162,6 +168,24 @@ function CancelarReserva(id) {
         document.getElementById(`estado-${id}`).innerText = "Disponible"; // Cambia el estado a "Disponible"
         document.getElementById(`accion-${id}`).innerHTML = 
             `<button onclick="ReservarHorario(${id})" class="btn btn-success">Reservar</button>`;
+            
     }) // Maneja la respuesta
     .catch(error => console.error("Error:", error)); // Maneja errores en la solicitud
+}
+function Eliminar(id){
+
+    let comfirmar = confirm('¿Estás seguro de eliminar este usuario?');
+
+    if (!comfirmar) {
+        return;
+    }
+
+    fetch (`http://127.0.0.1:8000/api/horarios/Eliminar/${id}`, { method: "DELETE" }) // Cambia la URL según tu API
+    .then(response => response.json())
+    .then(data => { // Procesa la respuesta
+        alert("Horario eliminado con éxito"); // Muestra un mensaje de éxito
+        CargarHorarios();
+    }) // Maneja la respuesta
+    .catch(error => console.error("Error:", error)); // Maneja errores en la solicitud
+
 }
