@@ -2,18 +2,11 @@
 use App\Http\Controllers\HorariosController;
 use Illuminate\Support\Facades\Route;
 
-// dd('El archivo api.php está siendo cargado correctamente');
-// use App\Http\Controllers\HorariosController;
 
-
-// Route::get('/horarios', [HorariosController::class, 'index']);
-// Route::post('/horarios', [HorariosController::class, 'store']);
-// Route::put('/horarios/reservar/{id}', [HorariosController::class, 'Reservar']);
-// Route::put('/horarios/cancelar/{id}', [HorariosController::class, 'Cancelar']);
-
-Route::get('/horarios', [HorariosController::class, 'index']);
-Route::post('/horarios', [HorariosController::class, 'store']);
-Route::put('/horarios/Editar/{id}',[HorariosController::class,'Editar']);
-Route::put('/horarios/reservar/{id}', [HorariosController::class, 'Reservar']);
-Route::put('/horarios/cancelar/{id}', [HorariosController::class, 'Cancelar']);
+Route::get('/horarios', [HorariosController::class, 'index']); // ruta para mostrar el inicio
+Route::post('/horarios', [HorariosController::class, 'store']); // ruta para mostrar los horarios registrados 
+Route::put('/horarios/Editar/{id}',[HorariosController::class,'Editar']); // ruta para editar los horarios
+Route::put('/horarios/reservar/{id}', [HorariosController::class, 'Reservar']); // ruta para reservar una cita 
+Route::put('/horarios/cancelar/{id}', [HorariosController::class, 'Cancelar']);// ruta para cancelar una cita 
+Route::delete('/horarios/Eliminar/{id}', [HorariosController::class, 'Eliminar']); // ruta para eliminar los horarios
 
