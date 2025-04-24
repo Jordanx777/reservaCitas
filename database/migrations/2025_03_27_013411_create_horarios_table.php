@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('horarios', function (Blueprint $table) {
-            $table->id();
-            $table->date('fecha');
-            $table->time('hora');
-            $table->boolean('disponible')->default(true);
-            $table->timestamps();
+            $table->id(); // Primary key
+            $table->date('fecha'); // el siguiente campo es tipo date para la fecha
+            $table->time('hora'); // el siguiente campo es tipo time para la hora
+            $table->boolean('disponible')->default(true); // el siguiente campo es tipo booleano para la disponibilidad
+            $table->timestamps(); // este campo es para las marcas de tiempo de creación y actualización
+
         });
     }
 
