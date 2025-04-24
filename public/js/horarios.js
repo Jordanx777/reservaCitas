@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", function () { // Espera a que el D
 function CargarHorarios() {
 
     console.log("Sesión en JS:", usuarioSesion.nombre);
+    console.log("Sesión en JS:", usuarioSesion.id_usuario);
+
+    id_usuario = usuarioSesion.id_usuario; // Obtiene el ID del usuario de la sesión
 
     if (usuarioSesion.cargo == 1) {
         console.log("El usuario es admin. Puede editar horarios.");
@@ -46,7 +49,7 @@ function CargarHorarios() {
                          ${horario.disponible ? 
                                 // Si el horario está disponible, muestra el botón de reservar
                                 // y oculta el botón de cancelar
-                                `<button onclick="ReservarHorario(${horario.id})" class="btn btn-success">Reservar</button>` :
+                                `<button onclick="ReservarHorario(${horario.id},${id_usuario})" class="btn btn-success">Reservar</button>` :
                                 // Si el horario está reservado, muestra el botón de cancelar
                                 `<button onclick="CancelarReserva(${horario.id})" class="btn btn-danger">Cancelar</button>` 
                             }
@@ -143,8 +146,9 @@ function Editar(){
 }
 
 // Función para reservar un horario sin recargar la página
-function ReservarHorario(id) { 
-    fetch(`http://127.0.0.1:8000/api/horarios/reservar/${id}`, { method: "PUT" }) // Cambia la URL según tu API
+function ReservarHorario(id , id_usuario) { 
+    console.log("ID de usuario:", id_usuario); // Muestra el ID del usuario en la consola
+    fetch(`http://127.0.0.1:8000/api/horarios/reservar/${id}/${id_usuario}`, { method: "PUT" }) // Cambia la URL según tu API
     .then(response => response.json()) // Convierte la respuesta a JSON
     .then(data => { // Procesa la respuesta
         alert("Horario reservado con éxito"); // Muestra un mensaje de éxito
