@@ -31,6 +31,7 @@
 @else 
 
 @endif
+
 <!-- Modal -->
 <div class="modal fade" id="modalHorario" tabindex="-1" aria-labelledby="modalHorarioLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -91,6 +92,7 @@
     <script>
       
     var usuarioSesion = {
+      id_usuario: "{{ session('id') }}",
         nombre: "{{ session('nombre') }}",
         cargo: "{{ session('cargo') }}"
     };
