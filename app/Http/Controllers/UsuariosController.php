@@ -52,7 +52,7 @@ class UsuariosController extends Controller
         }
         
         
-        $usuario = DB::table('Usuarios')->where('id', $id)->first();
+        $usuario = DB::table('usuarios')->where('id', $id)->first();
 
         // dump($usuario);
 
@@ -108,7 +108,7 @@ class UsuariosController extends Controller
         }
 
         //actualiza los valores en la base de datos
-        $consulta = DB::table('Usuarios')->where('id', $id)->update($datos);
+        $consulta = DB::table('usuarios')->where('id', $id)->update($datos);
 
         //si la consulta es correcta redirecciona al formulario con un mensaje
         if ($consulta) {
@@ -124,7 +124,7 @@ class UsuariosController extends Controller
         if (session()->has('nombre')) {
             
         //consulta a la base de datos para obtener todos los usuarios
-        $usuarios = DB::table('Usuarios')->join('cargos', 'Usuarios.cargo_id', '=', 'cargos.id')->select('Usuarios.*', 'cargos.descripcion as cargos')->get();
+        $usuarios = DB::table('usuarios')->join('cargos', 'usuarios.cargo_id', '=', 'cargos.id')->select('usuarios.*', 'cargos.descripcion as cargos')->get();
 
         $roles = Cargo::whereIn('id', $usuarios->pluck('cargo_id'))->get();// Obtener los roles relacionados con los usuarios
 
@@ -160,7 +160,7 @@ class UsuariosController extends Controller
         //  dd("Nombre: $nombre, Apellidos: $apellidos, Telefono: $telefono, Edad: $edad, Correo: $correo Contraseña: $contraseña, Confirmar Contraseña: $confirmar_contraseña, rol: $cargo_id");
 
         //inserta los valores en la base de datos
-        $consulta = DB::table('Usuarios')->insert([
+        $consulta = DB::table('usuarios')->insert([
             'nombre' => $nombre,
             'apellidos' => $apellidos,
             'telefono' => $telefono,
@@ -183,7 +183,7 @@ class UsuariosController extends Controller
     }
     public function Modificar_html($id){
         //consulta a la base de datos para obtener el usuario con el id
-        $usuario = DB::table('Usuarios')->where('id', $id)->first();
+        $usuario = DB::table('usuarios')->where('id', $id)->first();
         // dd("ID: ".$usuario->id, "Nombre: ".$usuario->nombre, "Apellidos: ".$usuario->apellidos, "Telefono: ".$usuario->telefono, "Edad: ".$usuario->edad, "Correo: ".$usuario->correo);
 
         // $roles = Cargo::find($usuario->cargo_id);
@@ -235,7 +235,7 @@ class UsuariosController extends Controller
         }
 
         //actualiza los valores en la base de datos
-        $consulta = DB::table('Usuarios')->where('id', $id)->update($datos);
+        $consulta = DB::table('usuarios')->where('id', $id)->update($datos);
 
         //si la consulta es correcta redirecciona al formulario con un mensaje
         if ($consulta) {
@@ -247,9 +247,9 @@ class UsuariosController extends Controller
     }
     public function Eliminar($id){
         //consulta a la base de datos para obtener el usuario con el id
-    $usuario = DB::table('Usuarios')->where('id', $id)->first();
+    $usuario = DB::table('usuarios')->where('id', $id)->first();
     // busca en la base de datos el usuario segun el id y lo elimina
-    $consulta = DB::table('Usuarios')->where('id', $id)->delete();
+    $consulta = DB::table('usuarios')->where('id', $id)->delete();
 
     $nombre_usuario = $usuario->nombre;
 
@@ -276,7 +276,7 @@ class UsuariosController extends Controller
         $contraseña = $request->input('contraseña');
 
         // dump("Correo: ".$correo, "Contraseña: ".$contraseña);
-        $consulta = DB::table('Usuarios')->where('correo', $correo)->first();
+        $consulta = DB::table('usuarios')->where('correo', $correo)->first();
 
         if (!$consulta) {
             return redirect()->route('login_html')->with(['mensaje'=> 'el Correo no existe', 'color' => 'red']);
