@@ -11,7 +11,7 @@ class UsuarioModel extends Model
     public $timestamps = false;
     use HasFactory;
 
-    protected $table = 'Usuarios';
+    protected $table = 'usuarios';
 
     protected $fillable = [
         'nombre', 'apellidos', 'telefono', 
