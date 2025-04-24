@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\HorariosController;
+use App\Http\Controllers\CitasControllers;
 
 // require base_path('routes/api.php');
 
@@ -54,8 +55,7 @@ Route::put('/Usuarios/perfil/actualizar/{id}',[UsuariosController::class,'Actual
 Route::get('/Usuarios/olvide', [UsuariosController::class,'Olvide_Mi_Contraseña'])->name('Usuarios.Olvide');
 
 
-
-
-
 Route::match(['get', 'post'],'/Horarios', [HorariosController::class,'Home' ])->name('horarios.index');
 
+
+Route::get('/mis-citas', [CitasControllers::class, 'Miscitas'])->name('Vercitas'); // ruta para mostrar las citas del usuario
