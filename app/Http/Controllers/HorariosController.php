@@ -12,7 +12,14 @@ class HorariosController extends Controller
      * Display a listing of the resource.
      */
     public function Home(){ // Vista de los horarios
-        return view('horarios.Index'); // retorna la vista de los horarios
+        if (!session()->has('id')) { // Verifica si la sesion no tiene el id
+            return view('usuarios.login'); // Redirige a la vista de inicio
+        }
+        if (session()->has('id')) { // Verifica si la sesion tiene el id
+            $id_usuario = session('id'); // Guarda el id de la sesion
+            return view('horarios.Index', compact('id_usuario')); // Retorna la vista de los horarios
+        }
+        // return view('horarios.Index'); // retorna la vista de los horarios
     }
 
      // Listar los horarios disponibles
@@ -67,37 +74,70 @@ class HorariosController extends Controller
 
     }
 
-    public function Reservar($id){ // Reservar un horario
+    public function Reservar($id, $id_usuario){ // Reservar un horario
         // Buscar el horario
         $horario = Horarios::find($id);
+
+        if (!$horario) { // Verificar si el horario existe
+            // Retornar un mensaje de error
+            return response()->json(['message' => 'Horario no encontrado'], 404);
+        }
 
         // Verificar si el horario existe
         if (!$horario->disponible) {
             // Retornar un mensaje de error
-            return response()->json(['message' => 'El horario ya fue reservado'], 400);
+            return response()->json(['mensaje' => 'El horario ya fue reservado'], 400);
 
             # code...
         }
+        
         // Cambiar el estado del horario
         $horario->disponible = false;
         // Guardar los cambios
         $horario->save();
-        // // Retornar el horario modificado
-        return response()->json(['mensaje' => 'El horario reservado es', 'horario' => $horario], 200);
 
 
+        $cita = \App\Models\Cita::create([
+            'usuario_id' => $id_usuario,
+            'horario_id' => $horario->id,
+            'estado' => 'reservado',
+        ]);
+
+        return response()->json([ // Retornar un mensaje de exito
+            'mensaje' => 'Cita registrada y horario reservado correctamente', 
+            'horario' => $horario, 
+            'cita' => $cita
+        ], 200);
     }
 
     public function Cancelar($id){ // Cancelar un horario
         // Buscar el horario
         $horario = Horarios::find($id);
+
+        if (!$horario) { // Verificar si el horario existe
+            // Retornar un mensaje de error
+            return response()->json(['mensaje' => 'Horario no encontrado'], 404);
+            # code...
+        }
         // Verificar si el horario existe
         $horario->disponible = true;
         // Guardar los cambios
         $horario->save();
-        // Retornar el horario modificado
-        return response()->json(['mensaje' => 'El horario cancelado es', 'horario' => $horario], 200);
 
+        $cita = \App\Models\Cita::where('horario_id', $id) // Buscar la cita
+        ->where('estado', 'reservado') // Verificar si la cita esta reservada
+        ->first();// Obtener la primera cita
+
+        if ($cita) { // Verificar si la cita existe
+            $cita->estado = 'cancelado'; // Cambiar el estado de la cita
+            $cita->save(); // Guardar los cambios
+        }
+        // Retornar el horario modificado
+        return response()->json([
+            'mensaje' => 'Cita cancelada y horario actualizado',
+            'horario' => $horario,
+            'cita' => $cita
+        ], 200);
     }
 
     public function Eliminar($id){
